@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crease – Cricketer Stats</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;600;800&family=Figtree:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e1b2c;--panel:#152741;--line:#27405f;--text:#eef2f7;--mute:#93a4bb;--gold:#f2d45c;--red:#e4472f;--green:#3fb37a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root:not([data-theme="light"]){color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;color:var(--text);font-family:Figtree,system-ui,sans-serif;line-height:1.5;background:radial-gradient(900px 480px at 50% -8%,rgba(242,212,92,.18),transparent 70%),radial-gradient(620px 420px at 100% 35%,rgba(228,71,47,.11),transparent 70%),radial-gradient(560px 380px at 0% 75%,rgba(63,179,122,.12),transparent 70%),repeating-linear-gradient(90deg,rgba(63,179,122,.055) 0 90px,transparent 90px 180px),var(--bg);background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='95' fill='%23e4472f' fill-opacity='.16'/%3E%3Cpath d='M42 38C82 90 82 110 42 162M158 38C118 90 118 110 158 162' fill='none' stroke='%23fff' stroke-opacity='.22' stroke-width='3' stroke-dasharray='7 6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right -110px bottom -110px/460px,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 120'%3E%3Cg fill='%23f2d45c' fill-opacity='.14'%3E%3Crect x='8' y='20' width='6' height='100' rx='3'/%3E%3Crect x='27' y='20' width='6' height='100' rx='3'/%3E%3Crect x='46' y='20' width='6' height='100' rx='3'/%3E%3Crect x='6' y='13' width='22' height='5' rx='2.5'/%3E%3Crect x='32' y='13' width='22' height='5' rx='2.5'/%3E%3C/g%3E%3C/svg%3E") no-repeat left 3% bottom -20px/150px}
+@media(max-width:720px){body::before{background-size:300px,100px;background-position:right -90px bottom -90px,left 2% bottom -14px}}
+.wrap{max-width:1040px;margin:0 auto;padding:20px 16px 60px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px;padding:28px 0 20px}
+h1{font-family:'Bricolage Grotesque',Figtree,sans-serif;font-weight:800;font-size:clamp(2.6rem,9vw,5rem);line-height:.95;margin:0;letter-spacing:-.03em}
+h1 span{color:var(--gold)}
+header p{margin:0;color:var(--mute);max-width:32ch}
+nav{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:22px}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--mute);padding:8px 16px;border-radius:999px}
+button:hover{color:var(--text)}
+button:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+button.on{background:var(--gold);border-color:var(--gold);color:#1b1500;font-weight:700}
+select{font:inherit;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.panel{background:var(--panel);border-radius:14px;padding:20px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--panel);border-radius:14px;padding:16px 18px;border-left:4px solid var(--gold)}
+.kpi:nth-child(even){border-left-color:var(--red)}
+.kpi b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:2.1rem;font-weight:800;line-height:1.1}
+.kpi small{color:var(--mute)}
+.name{font-family:'Bricolage Grotesque',sans-serif;font-size:1.9rem;font-weight:800;margin:0}
+.meta{color:var(--mute);margin:2px 0 16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:720px){.grid2{grid-template-columns:1fr}}
+h3{margin:0 0 14px;font-size:1rem;font-weight:700;color:var(--mute)}
+.bar{display:grid;grid-template-columns:110px 1fr 70px;gap:10px;align-items:center;margin:9px 0;font-size:.92rem}
+.bar i{display:block;height:12px;border-radius:6px;background:var(--gold);transition:width .5s}
+.bar.b i{background:var(--red)}
+.bar.g i{background:var(--green)}
+.track{background:#0e1b2c;border-radius:6px;overflow:hidden}
+.bar span:last-child{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--mute);font-weight:600;cursor:pointer;user-select:none}
+th:hover{color:var(--gold)}
+td:first-child{font-weight:700}
+.note{color:var(--mute);font-size:.85rem;margin-top:22px}
+.legend{display:flex;gap:16px;margin-bottom:10px;font-size:.9rem}
+.legend b{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.search{position:relative;width:100%;max-width:340px}
+.search input{width:100%;font:inherit;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:999px;padding:11px 18px}
+.search input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+#res{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--panel);border:1px solid var(--line);border-radius:14px;z-index:10;overflow:hidden}
+#res:empty{display:none}
+#res button{display:block;width:100%;text-align:left;border:0;border-radius:0;border-bottom:1px solid var(--line);color:var(--text);padding:10px 16px}
+#res button:hover,#res button:focus-visible{background:var(--line)}
+#res small{color:var(--mute);margin-left:6px}
+#res .none{margin:0;padding:12px 16px;color:var(--mute)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Crease<span>.</span></h1>
+<p>Career numbers in Tests, ODIs and T20Is for cricket's biggest run-scorers and wicket-takers.</p>
+<div class="search"><input id="q" type="search" placeholder="Search cricketers or countries" autocomplete="off" aria-label="Search cricketers"><div id="res"></div></div>
+</header>
+<nav id="nav">
+<button data-t="player" class="on">Player</button>
+<button data-t="compare">Compare</button>
+<button data-t="board">Leaderboard</button>
+<button data-t="bowl">Bowlers</button>
+</nav>
+<main id="view"></main>
+<p class="note">Career figures are rounded and approximate. Check ESPNcricinfo for live numbers.</p>
+</div>
+<script>
+const bat=[
+{n:"Sachin Tendulkar",c:"India",t:{m:200,r:15921,a:53.78,h:51},o:{m:463,r:18426,a:44.83,h:49}},
+{n:"Ricky Ponting",c:"Australia",t:{m:168,r:13378,a:51.85,h:41},o:{m:375,r:13704,a:42.03,h:30}},
+{n:"Kumar Sangakkara",c:"Sri Lanka",t:{m:134,r:12400,a:57.41,h:38},o:{m:404,r:14234,a:41.98,h:25}},
+{n:"Jacques Kallis",c:"South Africa",t:{m:166,r:13289,a:55.37,h:45},o:{m:328,r:11579,a:44.36,h:17}},
+{n:"Brian Lara",c:"West Indies",t:{m:131,r:11953,a:52.88,h:34},o:{m:299,r:10405,a:40.48,h:19}},
+{n:"Virat Kohli",c:"India",t:{m:123,r:9230,a:46.85,h:30},o:{m:315,r:15080,a:59.14,h:55}},
+{n:"Rahul Dravid",c:"India",t:{m:164,r:13288,a:52.31,h:36},o:{m:344,r:10889,a:39.16,h:12}},
+{n:"Sunil Gavaskar",c:"India",t:{m:125,r:10122,a:51.12,h:34},o:{m:108,r:3092,a:35.13,h:1}},
+{n:"Sourav Ganguly",c:"India",t:{m:113,r:7212,a:42.17,h:16},o:{m:311,r:11363,a:41.02,h:22}},
+{n:"MS Dhoni",c:"India",t:{m:90,r:4876,a:38.09,h:6},o:{m:350,r:10773,a:50.57,h:10}},
+{n:"Rohit Sharma",c:"India",t:{m:67,r:4301,a:40.57,h:12},o:{m:273,r:11168,a:48.7,h:32}},
+{n:"Viv Richards",c:"West Indies",t:{m:121,r:8540,a:50.23,h:24},o:{m:187,r:6721,a:47.0,h:11}},
+{n:"AB de Villiers",c:"South Africa",t:{m:114,r:8765,a:50.66,h:22},o:{m:228,r:9577,a:53.5,h:25}},
+{n:"Alastair Cook",c:"England",t:{m:161,r:12472,a:45.35,h:33},o:{m:92,r:3204,a:36.4,h:5}},
+{n:"Younis Khan",c:"Pakistan",t:{m:118,r:10099,a:52.05,h:34},o:{m:265,r:7249,a:31.24,h:7}},
+{n:"Adam Gilchrist",c:"Australia",t:{m:96,r:5570,a:47.6,h:17},o:{m:287,r:9619,a:35.89,h:16}},
+{n:"Steve Waugh",c:"Australia",t:{m:168,r:10927,a:51.06,h:32},o:{m:325,r:7569,a:32.9,h:3}},
+{n:"Mahela Jayawardene",c:"Sri Lanka",t:{m:149,r:11814,a:49.84,h:34},o:{m:448,r:12650,a:33.37,h:19}},
+{n:"Sanath Jayasuriya",c:"Sri Lanka",t:{m:110,r:6973,a:40.07,h:14},o:{m:445,r:13430,a:32.36,h:28}},
+{n:"Inzamam-ul-Haq",c:"Pakistan",t:{m:120,r:8830,a:49.6,h:25},o:{m:378,r:11739,a:39.52,h:10}},
+{n:"Hashim Amla",c:"South Africa",t:{m:124,r:9282,a:46.64,h:28},o:{m:181,r:8113,a:49.46,h:27}},
+{n:"Virender Sehwag",c:"India",t:{m:104,r:8586,a:49.34,h:23},o:{m:251,r:8273,a:35.05,h:15}},
+{n:"Yuvraj Singh",c:"India",t:{m:40,r:1900,a:33.93,h:3},o:{m:304,r:8701,a:36.55,h:14}},
+{n:"Chris Gayle",c:"West Indies",t:{m:103,r:7214,a:42.19,h:15},o:{m:301,r:10480,a:37.83,h:25}},
+{n:"Ian Botham",c:"England",t:{m:102,r:5200,a:33.54,h:14},o:{m:116,r:2113,a:23.21,h:0}},
+{n:"Imran Khan",c:"Pakistan",t:{m:88,r:3807,a:37.69,h:6},o:{m:175,r:3709,a:33.41,h:1}},
+{n:"Kapil Dev",c:"India",t:{m:131,r:5248,a:31.05,h:8},o:{m:225,r:3783,a:23.79,h:1}}];
+const bowl=[
+{n:"Muttiah Muralitharan",c:"Sri Lanka",t:{m:133,w:800,a:22.72},o:{m:350,w:534,a:23.08}},
+{n:"Shane Warne",c:"Australia",t:{m:145,w:708,a:25.41},o:{m:194,w:293,a:25.73}},
+{n:"James Anderson",c:"England",t:{m:188,w:704,a:26.45},o:{m:194,w:269,a:29.22}},
+{n:"Anil Kumble",c:"India",t:{m:132,w:619,a:29.65},o:{m:271,w:337,a:30.89}},
+{n:"Glenn McGrath",c:"Australia",t:{m:124,w:563,a:21.64},o:{m:250,w:381,a:22.02}},
+{n:"Wasim Akram",c:"Pakistan",t:{m:104,w:414,a:23.62},o:{m:356,w:502,a:23.52}},
+{n:"Dale Steyn",c:"South Africa",t:{m:93,w:439,a:22.95},o:{m:125,w:196,a:26.2}},
+{n:"Richard Hadlee",c:"New Zealand",t:{m:86,w:431,a:22.29},o:{m:115,w:158,a:21.56}},
+{n:"Kapil Dev",c:"India",t:{m:131,w:434,a:29.64},o:{m:225,w:253,a:27.45}},
+{n:"Curtly Ambrose",c:"West Indies",t:{m:98,w:405,a:20.99},o:{m:176,w:225,a:24.12}},
+{n:"Waqar Younis",c:"Pakistan",t:{m:87,w:373,a:23.56},o:{m:262,w:416,a:23.84}},
+{n:"Shaun Pollock",c:"South Africa",t:{m:108,w:421,a:23.11},o:{m:303,w:393,a:24.5}},
+{n:"Harbhajan Singh",c:"India",t:{m:103,w:417,a:32.46},o:{m:236,w:269,a:33.35}},
+{n:"Zaheer Khan",c:"India",t:{m:92,w:311,a:32.94},o:{m:200,w:282,a:29.44}},
+{n:"R Ashwin",c:"India",t:{m:106,w:537,a:24.0},o:{m:116,w:156,a:33.2}},
+{n:"Ian Botham",c:"England",t:{m:102,w:383,a:28.4},o:{m:116,w:145,a:28.54}},
+{n:"Imran Khan",c:"Pakistan",t:{m:88,w:362,a:22.81},o:{m:175,w:182,a:26.61}}];
+const $=s=>document.querySelector(s),f=x=>x.toLocaleString("en-IN");
+const T20={"Virat Kohli":{m:125,r:4188,a:48.69,h:1},"Rohit Sharma":{m:159,r:4231,a:32.05,h:5},"MS Dhoni":{m:98,r:1617,a:37.6,h:0},"Yuvraj Singh":{m:58,r:1177,a:28.02,h:0},"Chris Gayle":{m:79,r:1899,a:25.31,h:2},"AB de Villiers":{m:78,r:1672,a:26.12,h:0},"Kumar Sangakkara":{m:56,r:1382,a:31.4,h:0},"Mahela Jayawardene":{m:55,r:1493,a:31.08,h:0},"Sanath Jayasuriya":{m:31,r:629,a:23.29,h:0},"Hashim Amla":{m:44,r:1277,a:31.92,h:1},"Ricky Ponting":{m:17,r:401,a:28.64,h:0}};
+bat.forEach(p=>{if(T20[p.n])p.i=T20[p.n]});
+bat.push({n:"Babar Azam",c:"Pakistan",i:{m:128,r:4223,a:39.83,h:3}},{n:"Suryakumar Yadav",c:"India",i:{m:90,r:2700,a:37.5,h:4}});
+const B20={"R Ashwin":{m:65,w:72,a:23.22},"Dale Steyn":{m:47,w:64,a:18.36},"Harbhajan Singh":{m:28,w:25,a:25.32}};
+bowl.forEach(p=>{if(B20[p.n])p.i=B20[p.n]});
+bowl.push({n:"Jasprit Bumrah",c:"India",i:{m:80,w:100,a:17.7}},{n:"Rashid Khan",c:"Afghanistan",i:{m:105,w:170,a:13.9}});
+const FM={t:"Tests",o:"ODIs",i:"T20Is"},CL={t:"",o:"b",i:"g"};
+let tab="player",fmt="t",pi=0,ca=0,cb=5,bi=0,sk="r";
+const first=a=>a.findIndex(p=>p[fmt]);
+function fix(){if(!bat[pi][fmt])pi=first(bat);if(!bat[ca][fmt])ca=first(bat);if(!bat[cb][fmt])cb=first(bat);if(!bowl[bi][fmt])bi=first(bowl)}
+const opts=(a,i)=>a.map((p,k)=>p[fmt]?`<option value="${k}"${k==i?" selected":""}>${p.n}</option>`:"").join("");
+const fbtn=()=>Object.keys(FM).map(k=>`<button data-f="${k}" class="${fmt==k?"on":""}">${FM[k]}</button>`).join("");
+const bar=(l,v,max,cls="")=>`<div class="bar ${cls}"><span>${l}</span><div class="track"><i style="width:${Math.max(2,v/max*100)}%"></i></div><span>${f(v)}</span></div>`;
+const RS=()=>fmt=="i"?5000:20000,WS=()=>fmt=="i"?200:850;
+function player(){const p=bat[pi],s=p[fmt],fs=Object.keys(FM).filter(k=>p[k]);
+const top=[...bat].filter(x=>x[fmt]).sort((a,b)=>b[fmt].r-a[fmt].r).slice(0,8);if(!top.includes(p))top.push(p);
+return `<div class="row"><select id="ps">${opts(bat,pi)}</select>${fbtn()}</div>
+<h2 class="name">${p.n}</h2><p class="meta">${p.c} · ${FM[fmt]} career</p>
+<div class="kpis"><div class="kpi"><b>${f(s.r)}</b><small>Runs</small></div><div class="kpi"><b>${s.a}</b><small>Average</small></div><div class="kpi"><b>${s.h}</b><small>Centuries</small></div><div class="kpi"><b>${s.m}</b><small>Matches</small></div><div class="kpi"><b>${s.h?(s.r/s.h).toFixed(0):"–"}</b><small>Runs per hundred</small></div></div>
+<div class="grid2"><div class="panel"><h3>Across formats</h3>${[["Runs","r",20000],["Average","a",70],["Hundreds","h",60]].map(r=>`<h3 style="margin-top:12px">${r[0]}</h3>${fs.map(k=>bar(FM[k],p[k][r[1]],r[2],CL[k])).join("")}`).join("")}</div>
+<div class="panel"><h3>${p.n.split(" ").pop()} against the top run-scorers (${FM[fmt]} runs)</h3>${top.map(x=>bar(x.n.split(" ").pop(),x[fmt].r,RS(),x===p?"":"g")).join("")}</div></div>`}
+function compare(){const A=bat[ca],B=bat[cb],a=A[fmt],b=B[fmt];
+const rows=[["Runs","r",RS()],["Average","a",70],["Centuries","h",60],["Matches","m",480]];
+return `<div class="row"><select id="ca">${opts(bat,ca)}</select><span>vs</span><select id="cb">${opts(bat,cb)}</select>${fbtn()}</div>
+<div class="panel"><div class="legend"><span><b style="background:var(--gold)"></b>${A.n}</span><span><b style="background:var(--red)"></b>${B.n}</span></div>
+${rows.map(r=>`<h3 style="margin-top:18px">${r[0]}</h3>${bar(A.n.split(" ").pop(),a[r[1]],r[2])}${bar(B.n.split(" ").pop(),b[r[1]],r[2],"b")}`).join("")}</div>`}
+function board(){const rows=[...bat].filter(p=>p[fmt]).sort((x,y)=>y[fmt][sk]-x[fmt][sk]);
+const th=(k,l)=>`<th data-s="${k}">${l}${sk==k?" ▾":""}</th>`;
+return `<div class="row">${fbtn()}<span style="color:var(--mute)">Click a column to sort</span></div>
+<div class="panel tw"><table><tr><th>Player</th>${th("m","Matches")}${th("r","Runs")}${th("a","Avg")}${th("h","100s")}</tr>
+${rows.map(p=>`<tr><td>${p.n}<br><small style="color:var(--mute);font-weight:400">${p.c}</small></td><td>${p[fmt].m}</td><td>${f(p[fmt].r)}</td><td>${p[fmt].a}</td><td>${p[fmt].h}</td></tr>`).join("")}</table></div>`}
+function bowlers(){const p=bowl[bi],s=p[fmt];const top=[...bowl].filter(x=>x[fmt]).sort((a,b)=>b[fmt].w-a[fmt].w).slice(0,8);if(!top.includes(p))top.push(p);
+return `<div class="row"><select id="bs">${opts(bowl,bi)}</select>${fbtn()}</div><h2 class="name">${p.n}</h2><p class="meta">${p.c} · ${FM[fmt]} career</p>
+<div class="kpis"><div class="kpi"><b>${s.w}</b><small>Wickets</small></div><div class="kpi"><b>${s.a}</b><small>Average</small></div><div class="kpi"><b>${s.m}</b><small>Matches</small></div><div class="kpi"><b>${(s.w/s.m).toFixed(1)}</b><small>Wickets per match</small></div></div>
+<div class="grid2"><div class="panel"><h3>Wickets</h3>${top.map(x=>bar(x.n.split(" ").pop(),x[fmt].w,WS(),x===p?"":"g")).join("")}</div>
+<div class="panel"><h3>Bowling average (lower is better)</h3>${top.map(x=>bar(x.n.split(" ").pop(),x[fmt].a,35,x===p?"b":"g")).join("")}</div></div>`}
+function draw(){fix();$("#view").innerHTML={player,compare,board,bowl:bowlers}[tab]();
+document.querySelectorAll("[data-t]").forEach(b=>b.classList.toggle("on",b.dataset.t==tab));
+const g=id=>document.getElementById(id);
+if(g("ps"))g("ps").onchange=e=>{pi=+e.target.value;draw()};
+if(g("ca"))g("ca").onchange=e=>{ca=+e.target.value;draw()};
+if(g("cb"))g("cb").onchange=e=>{cb=+e.target.value;draw()};
+if(g("bs"))g("bs").onchange=e=>{bi=+e.target.value;draw()};
+document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{fmt=b.dataset.f;draw()});
+document.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{sk=b.dataset.s;draw()})}
+$("#nav").onclick=e=>{if(e.target.dataset.t){tab=e.target.dataset.t;draw()}};
+const all=[...bat.map((p,i)=>({p,k:"b",i})),...bowl.map((p,i)=>({p,k:"w",i}))];
+const q=$("#q"),res=$("#res");
+q.oninput=()=>{const v=q.value.trim().toLowerCase();if(!v){res.innerHTML="";return}
+const m=all.filter(x=>(x.p.n+" "+x.p.c).toLowerCase().includes(v)).slice(0,8);
+res.innerHTML=m.length?m.map(x=>`<button data-r="${all.indexOf(x)}">${x.p.n}<small>${x.p.c} · ${x.k=="b"?"Batting":"Bowling"}</small></button>`).join(""):`<p class="none">No cricketer found. Try a surname or a country.</p>`};
+q.onkeydown=e=>{if(e.key=="Enter"){const b=res.querySelector("[data-r]");if(b)b.click()}if(e.key=="Escape"){q.value="";res.innerHTML=""}};
+res.onclick=e=>{const b=e.target.closest("[data-r]");if(!b)return;const x=all[+b.dataset.r];if(!x.p[fmt])fmt=x.p.t?"t":x.p.o?"o":"i";if(x.k=="b"){tab="player";pi=x.i}else{tab="bowl";bi=x.i}q.value="";res.innerHTML="";draw()};
+draw();
+</script>
+</body>
+</html>
